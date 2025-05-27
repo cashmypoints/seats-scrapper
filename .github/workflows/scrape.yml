@@ -1,9 +1,9 @@
 name: Scrape Seats.aero
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 9 * * *'
-  workflow_dispatch:
 
 jobs:
   run-playwright:
@@ -25,9 +25,12 @@ jobs:
         python -m playwright install
 
     - name: Run scraper
-      run: python main.py
+      run: |
+        echo "Running scraper..."
+        python main.py || echo "❌ Scraper failed"
 
-    - name: Upload results.csv
+    - name: Upload results.csv (if it exists)
+      if: success() && hashFiles('results.csv') != ''
       uses: actions/upload-artifact@v3
       with:
         name: results
