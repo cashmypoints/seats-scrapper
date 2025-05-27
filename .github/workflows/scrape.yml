@@ -3,45 +3,44 @@ name: Scrape Seats.aero
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '0 9 * * *'  # Optional: Runs daily at 9:00 UTC
 
 jobs:
   run-playwright:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        python -m playwright install
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m playwright install
 
-    - name: Run scraper
-      run: |
-        echo "🚀 Starting scraper..."
-        python main.py
-        echo "✅ Scraper completed."
+      - name: Run scraper
+        run: |
+          echo "🚀 Starting scraper..."
+          python main.py
+          echo "✅ Scraper completed."
 
-        - name: Commit output to repo
-      run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "actions@github.com"
-        git pull origin main
+      - name: Commit output to repo
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git pull origin main
 
-        # Only stage files that exist
-        if [ -f output/results.csv ]; then git add output/results.csv; fi
-        if [ -f output/debug.png ]; then git add output/debug.png; fi
-        if [ -f output/page_dump.html ]; then git add output/page_dump.html; fi
+          # Only add files that exist
+          if [ -f output/results.csv ]; then git add output/results.csv; fi
+          if [ -f output/debug.png ]; then git add output/debug.png; fi
+          if [ -f output/page_dump.html ]; then git add output/page_dump.html; fi
 
-        # Commit only if something was added
-        git diff --cached --quiet || git commit -m "📦 Add scrape output"
-        git push origin main
-
+          # Commit only if there's something staged
+          git diff --cached --quiet || git commit -m "📦 Add scrape output"
+          git push origin main
