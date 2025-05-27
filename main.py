@@ -13,7 +13,12 @@ async def scrape_seats_aero(origin="DEL", destination="YVR", date="2025-10-16"):
 
         print(f"🔍 Searching {origin} → {destination} on {date}...")
 
-        await page.wait_for_selector("table", timeout=15000)
+        # wait for any text content or fallback element to ensure the page loaded
+await page.wait_for_selector("body", timeout=20000)
+
+# Optional: take a screenshot to verify
+await page.screenshot(path="debug.png", full_page=True)
+
         rows = await page.query_selector_all("tbody tr")
 
         if not rows:
