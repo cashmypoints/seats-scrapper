@@ -47,9 +47,10 @@ async def scrape_seats_aero(origin="DEL", destination="YVR", date="2025-10-16"):
         print("✅ Saved results.csv")
 
         # ✅ Create output folder and copy all files into it
-        os.makedirs("output", exist_ok=True)
-        shutil.copy("results.csv", "output/results.csv")
-        shutil.copy("debug.png", "output/debug.png")
-        shutil.copy("page_dump.html", "output/page_dump.html")
+os.makedirs("output", exist_ok=True)
+shutil.copy("results.csv", "output/results.csv")
+shutil.copy("debug.png", "output/debug.png")
+shutil.copy("page_dump.html", "output/page_dump.html")
+
 
 asyncio.run(scrape_seats_aero())
