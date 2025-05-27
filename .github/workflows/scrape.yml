@@ -26,21 +26,6 @@ jobs:
 
     - name: Run scraper
       run: |
-        echo "Running scraper..."
-        python main.py || echo "⚠️ Script failed or crashed."
-
-    - name: Check for results
-      id: result_check
-      run: |
-        if [ -f "results.csv" ]; then
-          echo "RESULT_FOUND=true" >> $GITHUB_ENV
-        else
-          echo "RESULT_FOUND=false" >> $GITHUB_ENV
-        fi
-
-    - name: Upload results.csv
-      if: env.RESULT_FOUND == 'true'
-      uses: actions/upload-artifact@v2
-      with:
-        name: results
-        path: results.csv
+        echo "🚀 Starting scraper..."
+        python main.py
+        echo "✅ Script finished."
