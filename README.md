@@ -1,1 +1,2 @@
-# seats-scrapper
+playwright
+pandas
