@@ -30,11 +30,18 @@ jobs:
         python main.py
         echo "✅ Scraper completed."
 
-    - name: Commit output to repo
+        - name: Commit output to repo
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "actions@github.com"
         git pull origin main
-        git add output/results.csv output/debug.png output/page_dump.html
-        git commit -m "📦 Add scrape output"
+
+        # Only stage files that exist
+        if [ -f output/results.csv ]; then git add output/results.csv; fi
+        if [ -f output/debug.png ]; then git add output/debug.png; fi
+        if [ -f output/page_dump.html ]; then git add output/page_dump.html; fi
+
+        # Commit only if something was added
+        git diff --cached --quiet || git commit -m "📦 Add scrape output"
         git push origin main
+
